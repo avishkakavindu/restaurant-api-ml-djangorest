@@ -1,0 +1,292 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "Hi!",
+        "Hi there",
+        "hi, How are you",
+        "Is anyone there?",
+        "Hey",
+        "Hola",
+        "Hello",
+        "Good day"
+      ],
+      "responses": [
+        "Hello!",
+        "Hi",
+        "Hey there",
+        "Hey hooman",
+        "Hola",
+        "Good to see you again",
+        "Hi there, how can I help?"
+      ],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": [
+        "Bye",
+        "See you later",
+        "See you",
+        "see ya later",
+        "Goodbye",
+        "Nice chatting to you, bye",
+        "Nice chat!",
+        "Till next time",
+        "Thanks",
+        "Thank you",
+        "That's helpful",
+        "Awesome, thanks",
+        "Thanks for helping me",
+        "Thanks for the help"
+      ],
+      "responses": [
+        "See you!",
+        "Happy to help!",
+        "Any time!",
+        "My pleasure"
+      ],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "noanswer",
+      "patterns": [
+        " ",
+        "",
+        " .",
+        "    "
+      ],
+      "responses": [
+        "Sorry, can't understand you",
+        "Please give me more info",
+        "Not sure I understand"
+      ],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "options",
+      "patterns": [
+        "How you could help me?",
+        "What help you provide?",
+        "How you can be helpful?",
+        "What can you do?"
+      ],
+      "responses": [
+        "I can guide you through food ordering, order tracking, table reservation",
+        "I can provide support related to following problems order related query,tracking related query and booking related queries"
+      ],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "menu",
+      "patterns": [
+        "Menu, please",
+        "What are your meals?",
+        "What is available to order?",
+        "What are you selling?"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "breakfast_menu",
+      "patterns": [
+        "What's for breakfast?",
+        "Breakfast",
+        "For morning"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "lunch_menu",
+      "patterns": [
+        "What's for lunch?",
+        "Lunch",
+        "for noon",
+        "I like lunch",
+        "I want lunch.",
+        "Like to have lunch"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "dinner_menu",
+      "patterns": [
+        "What's for dinner?",
+        "Dinner",
+        "For night"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "fast_food_menu",
+      "patterns": [
+        "fastfoods",
+        "Fast foods",
+        "Beverages",
+        "Drinks",
+        "Something to eat",
+        "Something lite"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "order",
+      "patterns": [
+        "I like to order the onion soup",
+        "I'd like a cheese pizza please",
+        "I'm going to have the eggs and toast",
+        "I'll take the burger"
+      ],
+      "responses": []  
+    },
+    {
+      "tag": "order_type_take_away",
+      "patterns": [
+        "I like to pickup",
+        "Pickup",
+        "I like to take away",
+        "Takeaway"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "order_type_deliver",
+      "patterns": [
+        "Please, deliver my order.",
+        "I like delivery",
+        "Deliver it",
+        "Send it to me",
+        "I like to send it"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "order_customization",
+      "patterns": [
+        "I want to customize my order",
+        "I like my own meal"
+      ],
+      "responses": [
+        "Please, provide your order id and message.(please follow the format <ID>-<message>)",
+        "Can you provide your order id? and message?(please follow the format <ID>-<message>)",
+        "What's your order id? and message?(please follow the format <ID>-<message>)"
+      ]
+    },
+    {
+      "tag": "custom_order_detail",
+      "patterns": [
+        "Order id: OID1",
+        "OID1",
+        "OID2",
+        "OID10",
+        "OID001",
+        "OID0003",
+        "OID123",
+        "OID234",
+        "OID23456"
+      ],
+      "responses": []
+    },
+    {
+      "tag": "order_tracking",
+      "patterns": [
+        "where is my order with id 431B67?",
+        "track order 562B78",
+        "Where is my order with id 561A24?"
+      ],
+      "responses": [],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "table_reservation",
+      "patterns": [
+        "Can I book a table?",
+        "Reserve a table",
+        "Book table"
+      ],
+      "responses": [
+        "Please, provide the time"
+      ],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "invalid",
+      "patterns": [
+        "Marry me",
+        "I love You",
+        "date me",
+        "chat with me",
+        "I am bored"
+      ],
+      "responses": [
+        "Please ask related query.",
+        "Sorry, I cannot understand"
+      ],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "name",
+      "patterns": [
+        "what is your name?",
+        "what should I call you?",
+        "Who are you?"
+      ],
+      "responses": [
+        "I'm your automated assistant",
+        "Hey!I'm just a bunch of code"
+      ],
+      "context": [
+        ""
+      ]
+    },
+    {
+      "tag": "about",
+      "patterns": [
+        "how you doing?",
+        "how are you"
+      ],
+      "responses": [
+        "Thanks For Asking!How can I help you?"
+      ],
+      "context": [
+        ""
+      ]
+    }
+  ]
+}
