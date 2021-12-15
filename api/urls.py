@@ -6,4 +6,5 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     path('bot/', ChatBotAPIView.as_view(), name="bot"),
+    path('table-reservation/', TableReservationAPIView.as_view(), name='table_reservation'),
 ]

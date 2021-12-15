@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
+from datetime import datetime
 
 
 class User(AbstractUser):
@@ -56,7 +57,7 @@ class Order(models.Model):
 
     order_id = models.CharField(max_length=255, unique=True)
     order_type = models.SmallIntegerField(choices=ORDER_TYPES, default=TAKEAWAY)
-    message = models.TextField()
+    message = models.TextField(null=True)
     ordered_food = models.ManyToManyField(
         Food,
         through='OrderedFood',
@@ -91,10 +92,19 @@ class DeliveryDetail(models.Model):
 
 
 class Table(models.Model):
-    """ Holds table and table reservation details """
-    time = models.DateTimeField()
-    is_reserved = models.BooleanField(default=False)
+    """ Holds table details """
+    num_of_chairs = models.PositiveSmallIntegerField(default=1)
+
+    def __str__(self):
+        return str(self.id)
+
+
+class TableReservation(models.Model):
+    """ Holds table reservation details """
+    check_in = models.DateTimeField(default=datetime.now())
+    check_out = models.DateTimeField(default=datetime.now())
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{}-{}'.format(self.id, self.user)
+        return '{}-{}'.format(self.table, self.user)

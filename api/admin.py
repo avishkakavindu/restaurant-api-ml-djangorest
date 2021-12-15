@@ -74,7 +74,14 @@ class DeliveryDetail(admin.ModelAdmin):
 
 @admin.register(Table)
 class TableAdmin(admin.ModelAdmin):
-    """ Table and Table reservation admin """
-    list_display = ['id', 'user', 'time', 'is_reserved']
+    """ Table admin """
+    list_display = ['id', 'num_of_chairs']
     search_fields = ['id', 'user']
-    list_filter = ['is_reserved']
+    list_filter = ['num_of_chairs']
+
+
+@admin.register(TableReservation)
+class TableReservationAdmin(admin.ModelAdmin):
+    """ Table reservation admin """
+    list_display = ['id', 'table', 'user', 'check_in', 'check_out']
+    search_fields = ['table', 'user', 'date']

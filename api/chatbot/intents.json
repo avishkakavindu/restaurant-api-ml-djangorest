@@ -234,10 +234,13 @@
       "patterns": [
         "Can I book a table?",
         "Reserve a table",
-        "Book table"
+        "Book table",
+        "Can I reserve a table for four people",
+        "Can you reserve table for three people"
       ],
       "responses": [
-        "Please, provide the time"
+        "Please, provide the time",
+        "When is your reservation for?"
       ],
       "context": [
         ""
