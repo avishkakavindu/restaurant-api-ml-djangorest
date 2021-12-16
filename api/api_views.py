@@ -36,7 +36,7 @@ class ChatBotAPIView(APIView):
         intent_predictions = model.get_predictions(pattern)
         tag = intent_predictions[0]['intent']
 
-        print('\n\n\n\n TAG: ')
+        # print('\n\n\n\n TAG: ')
         response = data = ''
 
         if tag == 'greetings':
@@ -60,26 +60,41 @@ class ChatBotAPIView(APIView):
             response = "Please select a menu"
         elif tag == 'breakfast_menu':
             data, msg = self.get_foods('breakfast')
+            response = "Please, select a dish"
         elif tag == 'lunch_menu':
             data, msg = self.get_foods('lunch')
+            response = "Please, select a dish"
         elif tag == 'dinner_menu':
             data, msg = self.get_foods('dinner')
+            response = "Please, select a dish"
         elif tag == 'fast_food_menu':
             data, msg = self.get_foods('fast foods')
+            response = "Please, select a dish"
         elif tag == 'order':
-            user = User.objects.get(id=1)
+            user = User.objects.get(id=request.user.id)
             order = Order.objects.filter(user=user).latest('id')
             serializer = OrderSerializer(order)
             data = serializer.data
+            response = "Here's your order details"
         elif tag == 'order_type_take_away':
-            pass
+            user = User.objects.get(id=request.user.id)
+            order = Order.objects.filter(user=user).latest('id')
+            order.order_type = Order.TAKEAWAY
+            order.save()
+            serializer = OrderSerializer(order)
+            data = serializer.data
+            response = "Order type changed to Take Away"
         elif tag == 'order_type_deliver':
-            pass
+            user = User.objects.get(id=request.user.id)
+            order = Order.objects.filter(user=user).latest('id')
+            order.order_type = Order.DELIVERY
+            order.save()
+            serializer = OrderSerializer(order)
+            data = serializer.data
+            response = "Order type changed to Delivery"
         elif tag == 'order_customization':
             pass
         elif tag == 'custom_order_detail':
-            pass
-        elif tag == 'order_tacking':
             pass
         elif tag == 'table_reservation':
             response = model.get_response(tag)
@@ -131,14 +146,10 @@ class TableReservationAPIView(APIView):
                 'data': None
             }
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
-
-        print('\n\n\n', 'hello')
         new_reservation = None
 
         for table in Table.objects.filter(num_of_chairs__gte=num_of_attendees):
             is_available = self.check_availability(table, check_in, check_out)
-
-            print('\n\n\n\n\n', is_available)
 
             if is_available:
                 new_reservation = TableReservation.objects.create(
@@ -163,3 +174,32 @@ class TableReservationAPIView(APIView):
         }
 
         return Response(context, status=status.HTTP_200_OK)
+
+
+class OrderAPIView(APIView):
+    """ Ordering APIView """
+
+    authentication_classes = [JWTTokenUserAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        food = Food.objects.get(id=request.data.get('food_id'))
+        quantity = request.data.get('quantity')
+
+        try:
+            order = Order.objects.get(user=user, is_active=True)
+        except Order.DoesNotExist:
+            order = Order.objects.create(user=user)
+
+        ordered_food, created = OrderedFood.objects.update_or_create(order=order, food=food, quantity=quantity)
+        order.ordered_food.add(food)
+
+        serializer = OrderSerializer(order)
+
+        context = {
+            'response': 'Dish added to your order.',
+            'data': serializer.data
+        }
+
+        return Response(context)

@@ -156,10 +156,11 @@
     {
       "tag": "order",
       "patterns": [
-        "I like to order the onion soup",
-        "I'd like a cheese pizza please",
-        "I'm going to have the eggs and toast",
-        "I'll take the burger"
+        "order",
+        "check my order",
+        "order details",
+        "get my order",
+        "my order"
       ],
       "responses": []  
     },
@@ -169,7 +170,8 @@
         "I like to pickup",
         "Pickup",
         "I like to take away",
-        "Takeaway"
+        "Takeaway",
+        "change order to take away"
       ],
       "responses": [],
       "context": [
@@ -216,18 +218,6 @@
         "OID23456"
       ],
       "responses": []
-    },
-    {
-      "tag": "order_tracking",
-      "patterns": [
-        "where is my order with id 431B67?",
-        "track order 562B78",
-        "Where is my order with id 561A24?"
-      ],
-      "responses": [],
-      "context": [
-        ""
-      ]
     },
     {
       "tag": "table_reservation",

@@ -40,6 +40,7 @@ class Food(models.Model):
     discount = models.DecimalField(max_digits=4, decimal_places=2,
                                    validators=[MinValueValidator(0), MaxValueValidator(100)])
     menu = models.ForeignKey(Menu, null=True, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/product', default='images/default.png')
 
     def __str__(self):
         return self.name
@@ -55,7 +56,6 @@ class Order(models.Model):
         (TAKEAWAY, 'Takeaway')
     ]
 
-    order_id = models.CharField(max_length=255, unique=True)
     order_type = models.SmallIntegerField(choices=ORDER_TYPES, default=TAKEAWAY)
     message = models.TextField(null=True)
     ordered_food = models.ManyToManyField(
@@ -64,9 +64,10 @@ class Order(models.Model):
         through_fields=['order', 'food']
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.order_id
+        return str(self.id)
 
 
 class OrderedFood(models.Model):
@@ -76,7 +77,7 @@ class OrderedFood(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return '{}-{}'.format(self.order.order_id, self.food)
+        return str(self.food)
 
 
 class DeliveryDetail(models.Model):

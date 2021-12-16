@@ -21,11 +21,15 @@ class FoodSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     """ Serializer for the Order model """
 
-    ordered_foods = serializers.RelatedField(many=True, queryset=OrderedFood.objects.all())
+    ordered_food = FoodSerializer(many=True, read_only=True)
+    order_type = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = []
+        fields = ['order_type', 'ordered_food']
+
+    def get_order_type(self, obj):
+        return obj.get_order_type_display()
 
 
 class TableSerializer(serializers.ModelSerializer):

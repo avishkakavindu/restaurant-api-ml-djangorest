@@ -52,8 +52,8 @@ class DeliveryDetailInline(admin.StackedInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     """ Order admin """
-    list_display = ['order_id', 'user', 'order_type']
-    search_fields = ['order_id', 'user', 'order_type']
+    list_display = ['user', 'order_type']
+    search_fields = ['user', 'order_type']
     list_filter = ['order_type']
     inlines = [OrderedFoodInline, DeliveryDetailInline]
 
