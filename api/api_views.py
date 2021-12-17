@@ -15,6 +15,9 @@ from django.db.models import Q
 class ChatBotAPIView(APIView):
     """ ChatBot related operations """
 
+    authentication_classes = [JWTTokenUserAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def get_menu(self, menu):
         """ returns a menu object """
         return Menu.objects.get(name=menu)
@@ -93,7 +96,11 @@ class ChatBotAPIView(APIView):
             data = serializer.data
             response = "Order type changed to Delivery"
         elif tag == 'order_customization':
-            pass
+            response = model.get_response(tag)
+            user = User.objects.get(id=request.user.id)
+            order = Order.objects.filter(user=user, is_active=True).latest('id')
+            serializer = OrderSerializer(order)
+            data = serializer.data
         elif tag == 'custom_order_detail':
             pass
         elif tag == 'table_reservation':
@@ -176,7 +183,7 @@ class TableReservationAPIView(APIView):
         return Response(context, status=status.HTTP_200_OK)
 
 
-class OrderAPIView(APIView):
+class OrderCreateUpdateAPIView(APIView):
     """ Ordering APIView """
 
     authentication_classes = [JWTTokenUserAuthentication]
@@ -203,3 +210,30 @@ class OrderAPIView(APIView):
         }
 
         return Response(context)
+
+
+class OrderCustomizationAPIView(APIView):
+    """ Order customization APIView """
+
+    authentication_classes = [JWTTokenUserAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        ordered_food = self.kwargs.get('pk')
+        customizations = OrderCustomization.objects.filter(ordered_food=ordered_food)
+        serializer = OrderCustomizationSerializer(customizations, many=True)
+        possible_customizations = Customization.objects.filter(food=OrderedFood.objects.get(id=ordered_food).food).values_list('customization')
+
+        CUSTOMIZATIONS = dict(Customization.CUSTOMIZATIONS)
+        possible_customizations = [CUSTOMIZATIONS[cus[0]] for cus in possible_customizations]
+
+        context = {
+            'response': 'Customizations.',
+            'data': serializer.data,
+            'cus': possible_customizations
+
+        }
+
+        return Response(context)
+
+

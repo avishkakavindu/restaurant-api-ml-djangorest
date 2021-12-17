@@ -199,9 +199,9 @@
         "I like my own meal"
       ],
       "responses": [
-        "Please, provide your order id and message.(please follow the format <ID>-<message>)",
-        "Can you provide your order id? and message?(please follow the format <ID>-<message>)",
-        "What's your order id? and message?(please follow the format <ID>-<message>)"
+        "Please, provide food you want to customize.(please provide the id)",
+        "Can you provide your order id? and message?(please provide the id)",
+        "What's your order id? and message?(please provide the id)"
       ]
     },
     {

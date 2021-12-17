@@ -85,3 +85,26 @@ class TableReservationAdmin(admin.ModelAdmin):
     """ Table reservation admin """
     list_display = ['id', 'table', 'user', 'check_in', 'check_out']
     search_fields = ['table', 'user', 'date']
+
+
+@admin.register(Customization)
+class CustomizationAdmin(admin.ModelAdmin):
+    """ Customization admin """
+    list_display = ['id', 'food', 'customization']
+    search_fields = ['food', 'customization']
+    list_filter = ['customization']
+    
+
+@admin.register(OrderCustomization)
+class OrderCustomizationAdmin(admin.ModelAdmin):
+    """ Order customization admin """
+    list_display = ['id', 'ordered_food', 'customization']
+    search_fields = ['id', 'ordered_food', 'customization']
+    list_filter = ['customization']
+
+
+@admin.register(OrderedFood)
+class OrderedFoodAdmin(admin.ModelAdmin):
+    """ OrdererdFood admin """
+    list_display = ['id', 'order', 'food', 'quantity']
+    search_fields = ['id', 'order', 'food']

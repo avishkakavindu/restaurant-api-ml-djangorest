@@ -46,6 +46,29 @@ class Food(models.Model):
         return self.name
 
 
+class Customization(models.Model):
+    """ Holds customization details """
+    EXTRA_SPICY = 0
+    EXTRA_SWEET = 1
+    EXTRA_MEAT = 2
+    EXTRA_GARLIC = 3
+    EXTRA_CHEESE = 4
+
+    CUSTOMIZATIONS = [
+        (EXTRA_SPICY, 'Extra Spicy'),
+        (EXTRA_SWEET, 'Extra Sweet'),
+        (EXTRA_MEAT, 'Extra Meat'),
+        (EXTRA_GARLIC, 'Extra Garlic'),
+        (EXTRA_CHEESE, 'Extra Cheese')
+    ]
+
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    customization = models.SmallIntegerField(choices=CUSTOMIZATIONS, default=None, null=True)
+    
+    def __str__(self):
+        return '{}'.format(self.get_customization_display())
+
+
 class Order(models.Model):
     """ Holds order details """
     DELIVERY = 0
@@ -78,6 +101,15 @@ class OrderedFood(models.Model):
 
     def __str__(self):
         return str(self.food)
+
+
+class OrderCustomization(models.Model):
+    """ Holds order customization details """
+    ordered_food = models.ForeignKey(OrderedFood, on_delete=models.CASCADE)
+    customization = models.ForeignKey(Customization, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
+        return '{}'.format(self.customization)
 
 
 class DeliveryDetail(models.Model):

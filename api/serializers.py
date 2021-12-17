@@ -46,3 +46,27 @@ class TableReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = TableReservation
         fields = '__all__'
+
+
+class CustomizationSerializer(serializers.ModelSerializer):
+    """ serializer for the Customization model """
+
+    customization = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Customization
+        fields = '__all__'
+
+    def get_customization(self, obj):
+        return obj.get_customization_display()
+
+
+class OrderCustomizationSerializer(serializers.ModelSerializer):
+    """ Serializer for the OrderCustomization model """
+
+    customization = CustomizationSerializer()
+
+    class Meta:
+        model = OrderCustomization
+        fields = ['id', 'ordered_food', 'customization']
+
