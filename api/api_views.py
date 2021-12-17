@@ -111,7 +111,7 @@ class ChatBotAPIView(APIView):
 
         context = {
             'tag': tag,
-            'probability': intent_predictions[0]['probability'],
+            # 'probability': intent_predictions[0]['probability'],
             'response': response,
             'data': data
         }
@@ -133,7 +133,7 @@ class TableReservationAPIView(APIView):
 
             for reservation in reservations:
                 if reservation.check_in.replace(tzinfo=None) > check_out or reservation.check_out.replace(tzinfo=None) < check_in:
-                    print('\n\n\n', reservation.check_out.replace(tzinfo=None) < check_in, reservation.check_out.replace(tzinfo=None), check_in)
+                    # print('\n\n\n', reservation.check_out.replace(tzinfo=None) < check_in, reservation.check_out.replace(tzinfo=None), check_in)
                     available_tables.append(True)
                 else:
                     available_tables.append(False)
@@ -149,7 +149,8 @@ class TableReservationAPIView(APIView):
 
         if check_in > check_out:
             context = {
-                'detail': 'Invalid time parameters',
+                "tag": 'reservation_status',
+                'response': 'Invalid time parameters',
                 'data': None
             }
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
@@ -176,7 +177,8 @@ class TableReservationAPIView(APIView):
             data = None
 
         context = {
-            "detail": detail,
+            "tag": 'reservation_status',
+            "response": detail,
             "data": data
         }
 
@@ -205,6 +207,7 @@ class OrderCreateUpdateAPIView(APIView):
         serializer = OrderSerializer(order)
 
         context = {
+
             'response': 'Dish added to your order.',
             'data': serializer.data
         }
@@ -218,22 +221,47 @@ class OrderCustomizationAPIView(APIView):
     authentication_classes = [JWTTokenUserAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    CUSTOMIZATIONS = dict(Customization.CUSTOMIZATIONS)
+
     def get(self, request, *args, **kwargs):
         ordered_food = self.kwargs.get('pk')
         customizations = OrderCustomization.objects.filter(ordered_food=ordered_food)
         serializer = OrderCustomizationSerializer(customizations, many=True)
         possible_customizations = Customization.objects.filter(food=OrderedFood.objects.get(id=ordered_food).food).values_list('customization')
 
-        CUSTOMIZATIONS = dict(Customization.CUSTOMIZATIONS)
-        possible_customizations = [CUSTOMIZATIONS[cus[0]] for cus in possible_customizations]
+        possible_customizations = [self.CUSTOMIZATIONS[cus[0]] for cus in possible_customizations]
 
         context = {
-            'response': 'Customizations.',
-            'data': serializer.data,
-            'cus': possible_customizations
-
+            'tag': 'customization_history',
+            'response': 'Your current customizations.',
+            'data': {
+                "ordered_customized_foods": serializer.data,
+                'possible_customizations': possible_customizations
+            }
         }
 
+        return Response(context, status=status.HTTP_200_OK)
+
+    def get_key_by_value(self, value, customizations=CUSTOMIZATIONS):
+        return list(customizations.keys())[list(customizations.values()).index(value)]
+
+    def get_object(self, id):
+        return OrderedFood.objects.get(id=id)
+
+    def post(self, request, *args, **kwargs):
+        ordered_food_id = self.kwargs.get('pk')
+        customization = request.data.get('customization')
+        food = OrderedFood.objects.get(id=ordered_food_id).food
+
+        customization = Customization.objects.get(customization=self.get_key_by_value(customization), food=food)
+        order_customization, created = OrderCustomization.objects.update_or_create(ordered_food=self.get_object(ordered_food_id), customization=customization)
+        serializer = OrderCustomizationSerializer(order_customization)
+
+        context = {
+            'data': serializer.data
+        }
+        
         return Response(context)
+
 
 

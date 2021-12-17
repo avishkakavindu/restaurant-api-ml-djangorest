@@ -106,7 +106,7 @@ class OrderedFood(models.Model):
 class OrderCustomization(models.Model):
     """ Holds order customization details """
     ordered_food = models.ForeignKey(OrderedFood, on_delete=models.CASCADE)
-    customization = models.ForeignKey(Customization, on_delete=models.DO_NOTHING)
+    customization = models.ForeignKey(Customization, on_delete=models.CASCADE)
 
     def __str__(self):
         return '{}'.format(self.customization)
