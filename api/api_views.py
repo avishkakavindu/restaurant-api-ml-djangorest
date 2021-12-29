@@ -75,7 +75,16 @@ class ChatBotAPIView(APIView):
             response = "Please, select a dish"
         elif tag == 'order':
             user = User.objects.get(id=request.user.id)
-            order = Order.objects.filter(user=user).latest('id')
+            try:
+                order = Order.objects.filter(user=user).latest('id')
+            except Order.DoesNotExist:
+                context = {
+                    'tag': tag,
+                    # 'probability': intent_predictions[0]['probability'],
+                    'response': 'No order found!',
+                    'data': None
+                }
+                return Response(context, status=status.HTTP_404_NOT_FOUND)
             serializer = OrderSerializer(order)
             data = serializer.data
             response = "Here's your order details"
