@@ -13,10 +13,8 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -30,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['restaurant-ml-app.herokuapp.com', '127.0.0.1']
 
 AUTH_USER_MODEL = 'api.User'
-
 
 # Application definition
 
@@ -78,7 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'restaurant.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -89,6 +85,10 @@ DATABASES = {
     }
 }
 
+import dj_database_url
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -147,7 +147,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
