@@ -9,4 +9,5 @@ urlpatterns = [
     path('table-reservation/', TableReservationAPIView.as_view(), name='table_reservation'),
     path('order/', OrderCreateUpdateAPIView.as_view(), name='order_create_update'),
     path('order-customization/<int:pk>/', OrderCustomizationAPIView.as_view(), name='order_customization'),
+    path('train/', TrainAPIView.as_view(), name='model_train'),
 ]

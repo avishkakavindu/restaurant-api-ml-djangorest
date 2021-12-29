@@ -103,7 +103,7 @@ class ChatBot:
         return model
 
     def train(self, epochs=200):
-        print('here')
+        # print('here')
         self.preprocess()
         self.create_pkl_files()
         train_set = self.get_train_set()
@@ -161,9 +161,9 @@ class ChatBot:
         response = random.choice(responses)
         return response
 
-# if __name__ == '__main__':
-#     model = ChatBot()
-#     model.train()
+if __name__ == '__main__':
+    model = ChatBot()
+    model.train()
 #     while True:
 #         msg = input()
 #         print(model.get_predictions(msg))

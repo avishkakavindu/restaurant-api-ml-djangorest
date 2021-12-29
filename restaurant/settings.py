@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-holqibw-)k$po)du1dl(ju74)$*mrubfhx+n&4@%t^adlr_0j!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['restaurant-ml-app.herokuapp.com', '127.0.0.1']
 
 AUTH_USER_MODEL = 'api.User'
 

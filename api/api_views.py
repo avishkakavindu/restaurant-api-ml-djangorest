@@ -264,4 +264,11 @@ class OrderCustomizationAPIView(APIView):
         return Response(context)
 
 
+class TrainAPIView(APIView):
+    """ Chat bot training APIView """
 
+    def get(self, request, *args, **kwargs):
+        model = ChatBot()
+        model.train()
+
+        return Response({'detail': 'Model Trained!'})
