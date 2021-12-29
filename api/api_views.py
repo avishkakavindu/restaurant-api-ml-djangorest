@@ -105,7 +105,7 @@ class ChatBotAPIView(APIView):
             data = serializer.data
             response = "Order type changed to Delivery"
         elif tag == 'order_customization':
-            response = model.get_response(tag)
+            response = 'Ordered dished.'
             user = User.objects.get(id=request.user.id)
             order = Order.objects.filter(user=user, is_active=True).latest('id')
             serializer = OrderSerializer(order)
