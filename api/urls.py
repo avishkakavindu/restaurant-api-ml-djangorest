@@ -10,4 +10,5 @@ urlpatterns = [
     path('order/', OrderCreateUpdateAPIView.as_view(), name='order_create_update'),
     path('order-customization/<int:pk>/', OrderCustomizationAPIView.as_view(), name='order_customization'),
     path('train/', TrainAPIView.as_view(), name='model_train'),
+    path('order-history/', OrderHistoryAPIView.as_view(), name='order_history'),
 ]

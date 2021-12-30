@@ -10,6 +10,7 @@ from rest_framework import mixins, generics, status
 from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 from rest_framework import authentication, permissions
 from django.db.models import Q
+from rest_framework import generics
 
 
 class ChatBotAPIView(APIView):
@@ -281,3 +282,23 @@ class TrainAPIView(APIView):
         model.train()
 
         return Response({'detail': 'Model Trained!'})
+
+
+class OrderHistoryAPIView(APIView):
+    """ Order history(week worth of) APIView """
+
+    authentication_classes = [JWTTokenUserAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(id=request.user.id)
+        queryset = Order.objects.filter(user=user)
+
+        serializer = OrderSerializer(queryset, many=True)
+
+        context = {
+            'data': serializer.data
+        }
+
+        return Response(context, status=status.HTTP_200_OK)
+
