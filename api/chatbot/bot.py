@@ -41,8 +41,8 @@ class ChatBot:
         self.classes = sorted(set(self.classes))
 
     def create_pkl_files(self):
-        pickle.dump(self.all_words, open('all_words.pkl', 'wb'))
-        pickle.dump(self.classes, open('classes.pkl', 'wb'))
+        pickle.dump(self.all_words, open('api/chatbot/all_words.pkl', 'wb'))
+        pickle.dump(self.classes, open('api/chatbot/classes.pkl', 'wb'))
 
     def gen_graph(self, hist, title):
         plt.plot(hist.history['accuracy'])
@@ -99,7 +99,7 @@ class ChatBot:
         model.compile(loss='categorical_crossentropy',
                       optimizer=adam,
                       metrics=["accuracy"])
-        print(model.summary())
+        # print(model.summary())
         return model
 
     def train(self, epochs=200):
@@ -114,7 +114,7 @@ class ChatBot:
 
         model = self.create_model(input_shape, output_shape)
         hist = model.fit(x=x_train, y=y_train, epochs=epochs, verbose=1)
-        model.save('model.model')
+        model.save('api/chatbot/model.model')
 
     def clean_up(self, sentence):
         tokenized = nltk.word_tokenize(sentence)

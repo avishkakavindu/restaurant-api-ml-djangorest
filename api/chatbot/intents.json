@@ -165,6 +165,21 @@
       "responses": []  
     },
     {
+      "tag": "order_history",
+      "patterns": [
+        "order history",
+        "order history",
+        "previous orders",
+        "get my order history",
+        "my order history",
+        "history",
+        "my history",
+        "prev history",
+        "old orders"
+      ],
+      "responses": []
+    },
+    {
       "tag": "order_type_take_away",
       "patterns": [
         "I like to pickup",

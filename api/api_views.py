@@ -1,6 +1,5 @@
 from datetime import datetime
 from datetime import timedelta
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.chatbot.bot import ChatBot
@@ -106,11 +105,21 @@ class ChatBotAPIView(APIView):
             data = serializer.data
             response = "Order type changed to Delivery"
         elif tag == 'order_customization':
-            response = 'Ordered dished.'
+            response = 'Ordered dishes.'
             user = User.objects.get(id=request.user.id)
             order = Order.objects.filter(user=user, is_active=True).latest('id')
             serializer = OrderSerializer(order)
             data = serializer.data
+        elif tag == 'order_history':
+            user = User.objects.get(id=request.user.id)
+
+            order = Order.objects.filter(user=user)
+            if not order.exists():
+                response = "Sorry, no previous orders!"
+
+            serializer = OrderSerializer(order, many=True)
+            data = serializer.data
+
         elif tag == 'custom_order_detail':
             pass
         elif tag == 'table_reservation':
@@ -164,6 +173,7 @@ class TableReservationAPIView(APIView):
                 'data': None
             }
             return Response(context, status=status.HTTP_400_BAD_REQUEST)
+
         new_reservation = None
 
         for table in Table.objects.filter(num_of_chairs__gte=num_of_attendees):
