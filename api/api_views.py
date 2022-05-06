@@ -107,9 +107,13 @@ class ChatBotAPIView(APIView):
         elif tag == 'order_customization':
             response = 'Ordered dishes.'
             user = User.objects.get(id=request.user.id)
-            order = Order.objects.filter(user=user, is_active=True).latest('id')
-            serializer = OrderSerializer(order)
-            data = serializer.data
+            try:
+                order = Order.objects.filter(user=user, is_active=True).latest('id')
+                serializer = OrderSerializer(order)
+                data = serializer.data
+            except Order.DoesNotExist:
+                response = "Sorry, no record found for the relevant order id please check whether the id is correct"
+                data = None
         elif tag == 'order_history':
             user = User.objects.get(id=request.user.id)
 

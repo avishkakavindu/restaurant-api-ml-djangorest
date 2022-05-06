@@ -26,7 +26,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['order_type', 'ordered_food']
+        fields = ['id', 'order_type', 'ordered_food']
 
     def get_order_type(self, obj):
         return obj.get_order_type_display()
