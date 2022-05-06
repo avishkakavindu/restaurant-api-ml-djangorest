@@ -249,9 +249,16 @@ class OrderCustomizationAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         ordered_food = self.kwargs.get('pk')
-        customizations = OrderCustomization.objects.filter(ordered_food=ordered_food)
+        user = request.user.id
+        order = Order.objects.filter(user=user).latest('id')
+        # ordered food object
+        o_f_obj_id = OrderedFood.objects.get(order=order, food=Food.objects.get(id=ordered_food)).id
+        print('\n\n\n food:', o_f_obj_id)
+
+        customizations = OrderCustomization.objects.filter(ordered_food=o_f_obj_id)
         serializer = OrderCustomizationSerializer(customizations, many=True)
-        possible_customizations = Customization.objects.filter(food=OrderedFood.objects.get(id=ordered_food).food).values_list('customization')
+
+        possible_customizations = Customization.objects.filter(food=OrderedFood.objects.get(id=o_f_obj_id).food).values_list('customization')
 
         possible_customizations = [self.CUSTOMIZATIONS[cus[0]] for cus in possible_customizations]
 
@@ -275,10 +282,16 @@ class OrderCustomizationAPIView(APIView):
     def post(self, request, *args, **kwargs):
         ordered_food_id = self.kwargs.get('pk')
         customization = request.data.get('customization')
-        food = OrderedFood.objects.get(id=ordered_food_id).food
+
+        user = request.user.id
+        order = Order.objects.filter(user=user).latest('id')
+        # ordered food object
+        o_f_obj_id = OrderedFood.objects.get(order=order, food=Food.objects.get(id=ordered_food_id)).id
+
+        food = OrderedFood.objects.get(id=o_f_obj_id).food
 
         customization = Customization.objects.get(customization=self.get_key_by_value(customization), food=food)
-        order_customization, created = OrderCustomization.objects.update_or_create(ordered_food=self.get_object(ordered_food_id), customization=customization)
+        order_customization, created = OrderCustomization.objects.update_or_create(ordered_food=self.get_object(o_f_obj_id), customization=customization)
         serializer = OrderCustomizationSerializer(order_customization)
 
         context = {
