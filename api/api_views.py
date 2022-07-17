@@ -221,7 +221,7 @@ class OrderCreateUpdateAPIView(APIView):
         quantity = request.data.get('quantity')
 
         try:
-            order = Order.objects.get(user=user, is_active=True)
+            order = Order.objects.filter(user=user, is_active=True).latest('id')
         except Order.DoesNotExist:
             order = Order.objects.create(user=user)
 
